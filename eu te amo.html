@@ -1,0 +1,184 @@
+```html
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eternamente</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    background:#000;
+    overflow:hidden;
+    width:100vw;
+    height:100vh;
+    font-family:Georgia, serif;
+}
+
+#container{
+    position:fixed;
+    inset:0;
+    z-index:1;
+}
+
+.love{
+    position:absolute;
+    color:white;
+    opacity:0;
+    user-select:none;
+    white-space:nowrap;
+    font-style:italic;
+    animation:fadeIn 1.5s forwards;
+}
+
+@keyframes fadeIn{
+    from{
+        opacity:0;
+        transform:scale(.8);
+    }
+    to{
+        opacity:1;
+        transform:scale(1);
+    }
+}
+
+#final{
+    position:fixed;
+    inset:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    opacity:0;
+    transition:opacity 4s ease;
+    background:#000;
+    z-index:2;
+}
+
+#message{
+    color:#ff0000;
+    font-size:clamp(30px,5vw,80px);
+    font-weight:bold;
+    text-align:center;
+    letter-spacing:3px;
+    text-shadow:
+        0 0 10px red,
+        0 0 20px red,
+        0 0 40px red;
+}
+
+.heart{
+    margin-top:30px;
+    color:red;
+    font-size:50px;
+    animation:pulse 1.5s infinite;
+}
+
+@keyframes pulse{
+    0%{transform:scale(1);}
+    50%{transform:scale(1.2);}
+    100%{transform:scale(1);}
+}
+</style>
+</head>
+
+<body>
+
+<div id="container"></div>
+
+<div id="final">
+    <div id="message">EU AMO VOCÊ MINHA PEQUENA</div>
+    <div class="heart">❤</div>
+</div>
+
+<script>
+
+const container = document.getElementById("container");
+const finalScreen = document.getElementById("final");
+
+let count = 0;
+const MAX_LOVES = 2500;
+
+function createLove(){
+
+    const text = document.createElement("div");
+
+    text.className = "love";
+    text.innerText = "Eu te amo.";
+
+    const x = Math.random() * window.innerWidth;
+    const y = Math.random() * window.innerHeight;
+
+    const size = 10 + Math.random() * 35;
+
+    text.style.left = x + "px";
+    text.style.top = y + "px";
+    text.style.fontSize = size + "px";
+
+    text.style.opacity = 0.15 + Math.random() * 0.85;
+
+    container.appendChild(text);
+
+    count++;
+
+    if(count >= MAX_LOVES){
+
+        setTimeout(()=>{
+
+            container.style.transition = "opacity 4s";
+            container.style.opacity = "0";
+
+            setTimeout(()=>{
+
+                container.innerHTML = "";
+                finalScreen.style.opacity = "1";
+
+            },4000);
+
+        },1000);
+
+        return;
+    }
+
+    let delay;
+
+    if(count < 5){
+        delay = 250;
+    }
+    else if(count < 20){
+        delay = 80;
+    }
+    else if(count < 50){
+        delay = 20;
+    }
+    else if(count < 150){
+        delay = 8;
+    }
+    else{
+        delay = 1;
+    }
+
+    setTimeout(createLove, delay);
+}
+
+window.onload = () => {
+
+    setTimeout(() => {
+
+        createLove();
+
+    }, 1500);
+
+};
+
+</script>
+
+</body>
+</html>
+```
